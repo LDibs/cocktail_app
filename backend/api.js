@@ -6,7 +6,6 @@ const PORT = process.env.PORT || 5000
 const cors = require('cors');
 require('dotenv').config()
 
-app.use(cors())
 app.use(express.json());
 app.use(passport.initialize());
 
@@ -18,6 +17,11 @@ mongoose.connection.on('connected', () => {
 mongoose.connection.on('error', () => {
   console.log('failed to connect to mongod');
 });
+
+app.use(cors({
+  credentials: true,
+  origin: process.env.REQUEST_ORIGIN
+}))
 
 app.use(require('./controllers'))
 app.get('/', (req, res) => {
